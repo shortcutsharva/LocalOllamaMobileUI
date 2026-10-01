@@ -37,6 +37,12 @@ export default function SettingsScreen() {
     [],
   );
 
+  useEffect(() => {
+    setBaseUrl(settings.baseUrl);
+    setSystemPrompt(settings.systemPrompt);
+    setTemperature(String(settings.temperature));
+  }, [settings]);
+
   const save = () => {
     const temp = Math.min(2, Math.max(0, Number(temperature) || 0.7));
     setSettings({
@@ -85,8 +91,10 @@ export default function SettingsScreen() {
     setError(null);
     setStatus(null);
     try {
-      const result = await checkConnection(baseUrl || settings.baseUrl, controller.signal);
+      const url = normalizeBaseUrl(baseUrl || settings.baseUrl);
+      const result = await checkConnection(url, controller.signal);
       if (!controller.signal.aborted) {
+        setSettings({ baseUrl: url });
         setStatus(`Server reachable. ${result.models} model(s) available.`);
       }
     } catch (e) {

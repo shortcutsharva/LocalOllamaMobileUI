@@ -22,7 +22,6 @@ function lastUserPreview(messages: { role: string; content: string }[]): string 
 export default function ChatsScreen() {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [tab, setTab] = useState<'chats' | 'templates' | 'profile'>('chats');
   const threads = useChatStore((s) => s.threads);
   const newThread = useChatStore((s) => s.newThread);
   const selectThread = useChatStore((s) => s.selectThread);
@@ -108,52 +107,29 @@ export default function ChatsScreen() {
         >
           <Pressable
             style={styles.tab}
-            onPress={() => setTab('chats')}
             accessibilityRole="button"
-            accessibilityState={{ selected: tab === 'chats' }}
+            accessibilityState={{ selected: true }}
           >
-            <Ionicons
-              name="chatbubbles-outline"
-              size={22}
-              color={tab === 'chats' ? theme.text : theme.faint}
-            />
-            <Text style={[styles.tabLabel, tab === 'chats' && styles.tabActiveLabel]}>
-              Chats
-            </Text>
+            <Ionicons name="chatbubbles-outline" size={22} color={theme.text} />
+            <Text style={[styles.tabLabel, styles.tabActiveLabel]}>Chats</Text>
           </Pressable>
           <Pressable
             style={styles.tab}
-            onPress={() => {
-              setTab('templates');
-              router.push('/templates');
-            }}
+            onPress={() => router.push('/templates')}
             accessibilityRole="button"
-            accessibilityState={{ selected: tab === 'templates' }}
+            accessibilityState={{ selected: false }}
           >
-            <Ionicons
-              name="grid-outline"
-              size={22}
-              color={tab === 'templates' ? theme.text : theme.faint}
-            />
-            <Text style={[styles.tabLabel, tab === 'templates' && styles.tabActiveLabel]}>
-              Templates
-            </Text>
+            <Ionicons name="grid-outline" size={22} color={theme.faint} />
+            <Text style={styles.tabLabel}>Templates</Text>
           </Pressable>
           <Link href="/settings" asChild>
             <Pressable
               style={styles.tab}
-              onPress={() => setTab('profile')}
               accessibilityRole="button"
-              accessibilityState={{ selected: tab === 'profile' }}
+              accessibilityState={{ selected: false }}
             >
-              <Ionicons
-                name="settings-outline"
-                size={22}
-                color={tab === 'profile' ? theme.text : theme.faint}
-              />
-              <Text style={[styles.tabLabel, tab === 'profile' && styles.tabActiveLabel]}>
-                Settings
-              </Text>
+              <Ionicons name="settings-outline" size={22} color={theme.faint} />
+              <Text style={styles.tabLabel}>Settings</Text>
             </Pressable>
           </Link>
         </View>
