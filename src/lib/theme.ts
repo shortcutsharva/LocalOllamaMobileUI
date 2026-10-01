@@ -1,0 +1,18 @@
+export const theme = {
+  bg: '#FFFFFF',
+  card: '#F6F6F4',
+  searchBg: '#F5F5F4',
+  sidebarBg: '#F7F7F5',
+  hover: '#EFEFEA',
+  border: '#E9E9E4',
+  text: '#111111',
+  muted: '#6F6E69',
+  faint: '#A7A6A0',
+  accent: '#2383E2',
+  accentSoft: '#E8F3FD',
+  userBubble: '#F1F1EF',
+  codeBg: '#F5F5F2',
+  sendIdle: '#D9D9D6',
+  danger: '#EB5757',
+  radius: 8,
+} as const;

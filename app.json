@@ -1,15 +1,24 @@
 {
   "expo": {
-    "name": "local-llm-chat-scaffold",
-    "slug": "local-llm-chat-scaffold",
+    "name": "Local LLM Chat",
+    "slug": "local-llm-chat",
+    "scheme": "localllmchat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsLocalNetworking": true
+        }
+      }
     },
     "android": {
+      "package": "com.localllmchat.app",
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -20,6 +29,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "67485150-2db8-41ed-b837-328e9612fe28"
+      }
+    },
+    "owner": "sharvasuresh"
   }
 }
