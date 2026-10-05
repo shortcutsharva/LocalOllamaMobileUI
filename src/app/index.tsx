@@ -73,11 +73,8 @@ export default function ChatsScreen() {
           keyExtractor={(t) => t.id}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <Pressable
-              style={[styles.card, index === 0 && filtered.length > 1 && styles.cardActive]}
-              onPress={() => openChat(item.id)}
-            >
+          renderItem={({ item }) => (
+            <Pressable style={styles.card} onPress={() => openChat(item.id)}>
               <View style={styles.cardRow}>
                 <Text style={styles.cardTitle} numberOfLines={1}>
                   {item.title}
@@ -169,7 +166,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 14,
   },
-  cardActive: { backgroundColor: theme.card },
   cardRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
   cardTitle: { fontSize: 16, fontWeight: '700', color: theme.text, flex: 1 },
   cardTime: { fontSize: 12, color: theme.faint },

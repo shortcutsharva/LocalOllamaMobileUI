@@ -1,3 +1,20 @@
+const FENCE = /(```[\s\S]*?(?:```|$)|~~~[\s\S]*?(?:~~~|$))/g;
+
+// Models often emit \( ... \) and \[ ... \] math delimiters, but the renderer
+// only understands $ ... $ and $$ ... $$.
+export function normalizeMath(content: string): string {
+  return content
+    .split(FENCE)
+    .map((part, i) =>
+      i % 2 === 1
+        ? part
+        : part
+            .replace(/\\\[([\s\S]+?)\\\]/g, (_, tex) => `$$${tex}$$`)
+            .replace(/\\\(([\s\S]+?)\\\)/g, (_, tex) => `$${tex}$`),
+    )
+    .join('');
+}
+
 export function timeAgo(ts: number): string {
   const s = Math.floor((Date.now() - ts) / 1000);
   if (s < 60) return 'Now';

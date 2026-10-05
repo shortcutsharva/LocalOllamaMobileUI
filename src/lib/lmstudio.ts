@@ -1,6 +1,10 @@
+export type ChatContentPart =
+  | { type: 'text'; text: string }
+  | { type: 'image_url'; image_url: { url: string } };
+
 export interface ChatMessageDTO {
   role: 'system' | 'user' | 'assistant';
-  content: string;
+  content: string | ChatContentPart[];
 }
 
 export interface LMModel {
@@ -67,7 +71,7 @@ export async function sendChatCompletion({
 }: SendChatArgs): Promise<string> {
   const base = normalizeBaseUrl(baseUrl);
   if (!base) throw new Error('Set your LM Studio server URL in Settings.');
-  if (!model) throw new Error('Pick a model in Settings first.');
+  if (!model) throw new Error('Pick a model for this chat first.');
 
   const body = JSON.stringify({
     model,

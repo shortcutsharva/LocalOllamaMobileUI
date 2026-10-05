@@ -19,6 +19,7 @@ export default function SettingsScreen() {
   const settings = useChatStore((s) => s.settings);
   const setSettings = useChatStore((s) => s.setSettings);
   const clearAll = useChatStore((s) => s.clearAll);
+  const publishModels = useChatStore((s) => s.setModels);
 
   const [baseUrl, setBaseUrl] = useState(settings.baseUrl);
   const [systemPrompt, setSystemPrompt] = useState(settings.systemPrompt);
@@ -37,19 +38,11 @@ export default function SettingsScreen() {
     [],
   );
 
-  useEffect(() => {
-    setBaseUrl(settings.baseUrl);
-    setSystemPrompt(settings.systemPrompt);
-    setTemperature(String(settings.temperature));
-  }, [settings]);
-
   const save = () => {
     const temp = Math.min(2, Math.max(0, Number(temperature) || 0.7));
-    setSettings({
-      baseUrl: normalizeBaseUrl(baseUrl),
-      systemPrompt,
-      temperature: temp,
-    });
+    const url = normalizeBaseUrl(baseUrl);
+    setSettings({ baseUrl: url, systemPrompt, temperature: temp });
+    setBaseUrl(url);
     setStatus('Saved. Base URL is normalized (trailing /v1 removed).');
     setTimeout(() => setStatus(null), 3000);
   };
@@ -66,7 +59,9 @@ export default function SettingsScreen() {
       const list = await listModels(url, controller.signal);
       if (controller.signal.aborted) return;
       setModels(list);
+      publishModels(list.map((m) => m.id));
       setSettings({ baseUrl: url });
+      setBaseUrl(url);
       if (list.length > 0 && !list.some((m) => m.id === settings.model)) {
         setSettings({ model: list[0].id });
       }
@@ -95,6 +90,7 @@ export default function SettingsScreen() {
       const result = await checkConnection(url, controller.signal);
       if (!controller.signal.aborted) {
         setSettings({ baseUrl: url });
+        setBaseUrl(url);
         setStatus(`Server reachable. ${result.models} model(s) available.`);
       }
     } catch (e) {
@@ -117,8 +113,8 @@ export default function SettingsScreen() {
         </Pressable>
         <Text style={styles.h1}>Connect to LM Studio</Text>
         <Text style={styles.body}>
-          On your PC: LM Studio → Developer tab → Start Server (default port 1234). Enable "Serve
-          on local network". Use your PC's LAN IP, e.g. http://192.168.1.10:1234. Your phone must
+          On your PC: LM Studio → Developer tab → Start Server (default port 1234). Enable &quot;Serve
+          on local network&quot;. Use your PC&apos;s LAN IP, e.g. http://192.168.1.10:1234. Your phone must
           be on the same Wi-Fi.
         </Text>
 
